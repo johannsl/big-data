@@ -3,7 +3,8 @@ Quickstartfiles/
 bigdata-foursquare
 bigdata-twitter
 r/
-resources/
+foursquare-data/
+twitter-data/
 
 
 # Byte-compiled / optimized / DLL files

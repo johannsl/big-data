@@ -9,9 +9,9 @@ from pyspark import SparkContext
 #new_times = {}
 
 conf = (SparkConf()
-         .setMaster("local")
-         .setAppName("My app")
-         .set("spark.executor.memory", "1g"))
+         .setMaster("local[2]")
+         .setAppName("foursquare")
+         .set("spark.executor.memory", "2g"))
 sc = SparkContext(conf = conf)
 
 data0 = sc.textFile("./resources/dataset_TIST2015.tsv")
@@ -20,22 +20,22 @@ data1 = sc.textFile("./resources/dataset_TIST2015_Cities.txt")
 def printer(data):
     print data
 
-def time_printer(data):
-    NotImplemented 
-
-def time_calc(data):
-    date = datetime.strptime(data.split("\t")[3],'%Y-%m-%d %H:%M:%S')
-    delta = int(data.split("\t")[4])
-    total = datetime.strftime(date + timedelta(minutes=delta))
-    
-    
-
-header = data0.first()
-data0 = data0.filter(lambda x:x !=header)
-
+#def time_printer(data):
+#    NotImplemented 
+#
+#def time_calc(data):
+#    date = datetime.strptime(data.split("\t")[3],'%Y-%m-%d %H:%M:%S')
+#    delta = int(data.split("\t")[4])
+#    total = datetime.strftime(date + timedelta(minutes=delta))
+#    
+#    
+#
+#header = data0.first()
+#data0 = data0.filter(lambda x:x !=header)
+#
 #data0.foreach(printer)
 #data0.foreach(time_printer)
-data0.foreach(time_calc)
+#data0.foreach(time_calc)
 
 
 
