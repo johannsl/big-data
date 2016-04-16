@@ -14,11 +14,11 @@ conf = (SparkConf()
          .set("spark.executor.memory", "2g"))
 sc = SparkContext(conf = conf)
 
-data0 = sc.textFile("./resources/dataset_TIST2015.tsv")
-data1 = sc.textFile("./resources/dataset_TIST2015_Cities.txt")
+foursquare-data-cities = sc.textFile('./foursquare-data/dataset_TIST2015_Cities.txt')
+foursquare-data = sc.textFile('./foursquare-data/dataset_TIST2015.tsv')
 
-def printer(data):
-    print data
+#def printer(data):
+#    print data
 
 #def time_printer(data):
 #    NotImplemented 
