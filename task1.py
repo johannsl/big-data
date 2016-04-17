@@ -12,9 +12,6 @@ sc = SparkContext(conf = conf)
 foursquare_data = sc.textFile("../big-data/foursquare-data/dataset_TIST2015.tsv")
 cities_data = sc.textFile("../big-data/twitter-data/dataset_TIST2015_Cities.txt")
 
-foursquare_data = sc.textFile("./foursquare-data/dataset_TIST2015.tsv")
-cities_data = sc.textFile("./twitter-data/dataset_TIST2015_Cities.txt")
-
 def set_time(data):
     line = data.split("\t")
     old_date = datetime.strptime(line[3], "%Y-%m-%d %H:%M:%S")
