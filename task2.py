@@ -10,9 +10,18 @@ from pyspark import SparkConf
 from pyspark import SparkContext
 
 # Script functions to edit data
-def assignLocation(data):
+def remove_excess(data):
+	line = data.split("\t")
+	line.remove(line[5])
+	line.remove(line[4])
+	result = "\t".join(line)
+	return line
+
+def assign_location(data):
     line = data.split("\t")
-	
+    lat = data[5] 
+	lon = data[6]
+    # write comparison here
     
 def haversine(lat1, lon1, lat2, lon2):
 
@@ -42,33 +51,34 @@ print "\nUser: ", sc.sparkUser()
 print "\nVersion: ", sc.version
 
 # Import data
+cities_data = sc.textFile("foursquare-data/dataset_TIST2015_Cities.txt",
+                            use_unicode=False)
 foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-00000",
                                 use_unicode=False)
-cities_data = sc.textFile("foursquare-data/dataset_TIST2015_Cities.txt")
 
 # Provoke action in dataset
+cities_data = cities_data.map(remove_excess)
+c_data_type = type(cities_data) 
+c_count = cities_data.count()
+c_first = cities_data.first()
+c_top_5 = cities_data.top(5)
+#foursquare_data = foursquare_data.map(assign_location)
 fq_data_type = type(foursquare_data) 
 fq_count = foursquare_data.count()
 fq_first = foursquare_data.first()
 fq_top_5 = foursquare_data.top(5)
 
-c_data_type = type(cities_data) 
-c_count = cities_data.count()
-c_first = cities_data.first()
-c_top_5 = cities_data.top(5)
-
 # Print some data information
-print "\n### FOURSQUARE_DATA ###"
-print "\nfoursquare_data filetype: ", fq_data_type
-print "\nNumber of elements: ", fq_count
-print "\nFirst element in the dataset: ", fq_first
-print "\nTop 5 elements in the dataset: ", fq_top_5
-
 print "\n### CITIES_DATA ###"
 print "\ncities_data filetype: ", c_data_type
 print "\nNumber of elements: ", c_count
 print "\nFirst element in the dataset: ", c_first
 print "\nTop 5 elements in the dataset: ", c_top_5
+print "\n### FOURSQUARE_DATA ###"
+print "\nfoursquare_data filetype: ", fq_data_type
+print "\nNumber of elements: ", fq_count
+print "\nFirst element in the dataset: ", fq_first
+print "\nTop 5 elements in the dataset: ", fq_top_5
 
 # Save the data
 #foursquare_data.saveAsHadoopDataset("foursquare/hadoop_dataset")
