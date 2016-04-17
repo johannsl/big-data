@@ -23,7 +23,7 @@ print "\nUser: ", sc.sparkUser()
 print "\nVersion: ", sc.version
 
 # Import data
-foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-00000",
+foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-*",
                                 use_unicode=False)
 
 # Provoke action in dataset
