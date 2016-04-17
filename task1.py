@@ -9,8 +9,8 @@ conf = (SparkConf()
          .set("spark.executor.memory", "1g"))
 sc = SparkContext(conf = conf)
 
-foursquare_data = sc.textFile("../big-data/foursquare-data/dataset_TIST2015.tsv")
-cities_data = sc.textFile("../big-data/twitter-data/dataset_TIST2015_Cities.txt")
+foursquare_data = sc.textFile("foursquare-data/dataset_TIST2015.tsv")
+cities_data = sc.textFile("twitter-data/dataset_TIST2015_Cities.txt")
 
 def set_time(data):
     line = data.split("\t")
