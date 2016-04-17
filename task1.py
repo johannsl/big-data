@@ -1,26 +1,29 @@
 from datetime import datetime
 from datetime import timedelta
-import json
 from pyspark import SparkConf
 from pyspark import SparkContext
 
-#TODO Make this efficient, should be saves as a tsv
-
-#new_times = {}
-
 conf = (SparkConf()
-         .setMaster("local[2]")
-         .setAppName("foursquare")
-         .set("spark.executor.memory", "2g"))
+         .setMaster("local")
+         .setAppName("My app")
+         .set("spark.executor.memory", "1g"))
 sc = SparkContext(conf = conf)
 
-foursquare-data-cities = sc.textFile('.foursquare-data/dataset_TIST2015_Cities.txt')
-foursquare-data = sc.textFile('./foursquare-data/dataset_TIST2015.tsv')
+foursquare_data = sc.textFile("../big-data/foursquare-data/dataset_TIST2015.tsv")
+cities_data = sc.textFile("../big-data/twitter-data/dataset_TIST2015_Cities.txt")
 
+# Prints all elements from foresquare
 def printer(data):
-    print data
+ 
+    print('================')
+    print type(data.split('\t')[3])
+    print data.split('\t')[3]
+    print type(data.split('\t')[4])
+    print data.split('\t')[4]
+    
+foursquare_data.foreach(printer)
 
-foursquare.data.foreach(printer)
+# ----------------------------------
 
 #def time_printer(data):
 #    NotImplemented 
@@ -35,12 +38,9 @@ foursquare.data.foreach(printer)
 #header = data0.first()
 #data0 = data0.filter(lambda x:x !=header)
 #
-#data0.foreach(printer)
+
 #data0.foreach(time_printer)
 #data0.foreach(time_calc)
-
-
-
 
 #temp0 = temp0.take(10)
 
