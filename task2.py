@@ -1,6 +1,6 @@
 """
 Import and edit the result from task1.py.
-Its output is saved in foursquare-data/foursquare_edit/part-xxxxx
+task1.py's output can be found in foursquare-data/foursquare_edit/part-xxxxx
 - johan
 """
 
@@ -17,5 +17,4 @@ sc = SparkContext(conf = conf)
 
 foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-00000")
 
-print foursquare_data.count()
-
+foursquare_data.saveAsHadoopDataset("foursquare/hadoop_dataset")
