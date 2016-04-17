@@ -9,16 +9,18 @@ conf = (SparkConf()
          .set("spark.executor.memory", "1g"))
 sc = SparkContext(conf = conf)
 
-<<<<<<< HEAD
 foursquare_data = sc.textFile("./foursquare-data/dataset_TIST2015.tsv")
 cities_data = sc.textFile("./twitter-data/dataset_TIST2015_Cities.txt")
 
-# Prints all elements from foresquare
 def printer(data):
     print data
-foursquare_data.foreach(printer)
-# ----------------------------------
 
+# Prints all elements from foresquare
+foursquare_data.foreach(printer)
+
+
+
+# To be worked on
 #def time_printer(data):
 #    NotImplemented 
 #
