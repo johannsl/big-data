@@ -16,7 +16,7 @@ conf = (SparkConf()
 sc = SparkContext(conf = conf)
 
 foursquare_data = sc.textFile("foursquare-data/dataset_TIST2015.tsv")
-cities_data = sc.textFile("twitter-data/dataset_TIST2015_Cities.txt")
+#cities_data = sc.textFile("twitter-data/dataset_TIST2015_Cities.txt")
 
 def set_time(data):
     line = data.split("\t")
@@ -29,7 +29,7 @@ def set_time(data):
     result = "\t".join(line)
     return result
 
-header = foursquare_data.first()
-headless = foursquare_data.filter(lambda x: x != header)
-new_rdd = headless.map(set_time)
+foursquare_data_header = foursquare_data.first()
+foursquare_data_headless = foursquare_data.filter(lambda x: x != foursquare_data_header)
+new_rdd = foursquare_data_headless.map(set_time)
 new_rdd.saveAsTextFile("foursquare-data/foursquare_edit")
