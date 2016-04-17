@@ -9,6 +9,7 @@ conf = (SparkConf()
          .set("spark.executor.memory", "1g"))
 sc = SparkContext(conf = conf)
 
+<<<<<<< HEAD
 foursquare_data = sc.textFile("./foursquare-data/dataset_TIST2015.tsv")
 cities_data = sc.textFile("./twitter-data/dataset_TIST2015_Cities.txt")
 
