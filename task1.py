@@ -16,7 +16,7 @@ conf = (SparkConf()
 sc = SparkContext(conf = conf)
 
 foursquare_data = sc.textFile("foursquare-data/dataset_TIST2015.tsv")
-cities_data = sc.textFile("twitter-data/dataset_TIST2015_Cities.txt")
+cities_data = sc.textFile("foursquare-data/dataset_TIST2015_Cities.txt")
 
 def set_time(data):
     line = data.split("\t")
