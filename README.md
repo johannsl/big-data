@@ -8,4 +8,4 @@ brew install apache-spark
 pip install py4j
 
 # Run pyspark code
-spark-submit <pythonfile.py>
+spark-submit >pythonfile.py<
