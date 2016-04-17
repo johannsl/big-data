@@ -17,20 +17,26 @@ conf = (SparkConf()
 sc = SparkContext(conf = conf)
 
 # Print some SparkConf variables
-print "\nSparkConf variables: \n", conf.toDebugString()
+print "\nSparkConf variables: ", conf.toDebugString()
+print "\nSparkConf id: ", sc.applicationId
+print "\nUser: ", sc.sparkUser()
+print "\nVersion: ", sc.version
 
 # Import data
-foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-00000")
+foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-00000",
+                                use_unicode=False)
 
 # Provoke action in dataset
 data_type = type(foursquare_data) 
-first = foursquare_data.first()
 count = foursquare_data.count()
+first = foursquare_data.first()
+top_5 = foursquare_data.top(5)
 
 # Print some data information
 print "\nfoursquare_data filetype: ", data_type
-print "\nFirst element in the dataset: ", first
 print "\nNumber of elements: ", count
+print "\nFirst element in the dataset: ", first
+print "\nTop 5 elements in the dataset: ", top_5
 
 # Save the data
 #foursquare_data.saveAsHadoopDataset("foursquare/hadoop_dataset")
