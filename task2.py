@@ -61,20 +61,31 @@ foursquare_data = sc.textFile("foursquare-data/foursquare_edit/part-00000",
 
 # Provoke action in dataset
 #cities_data = cities_data.map(remove_excess)
+thelist = []
+#cities_data = cities_data.map(lambda x: x.split("\t"))
+cities_data = cities_data.map(lambda x: x.split("\t"))
+cities_data_iterator = cities_data.toLocalIterator()
 c_data_type = type(cities_data) 
 c_count = cities_data.count()
 c_first = cities_data.first()
-c_top_5 = cities_data.top(5)
+c_top_5 = cities_data.top(10)
 
 foursquare_data = foursquare_data.map(lambda x: x.split("\t"))
+def f(x): 
+	y = x
+	#y = cities_data.collect()	
+foursquare_data.foreach(f)
 fq_data_type = type(foursquare_data) 
 fq_count = foursquare_data.count()
 fq_first = foursquare_data.first()
 fq_top_5 = foursquare_data.top(5)
 
 # Print some data information
+print cities_data.collect()
+print cities_data_iterator.next()
 print "\n### CITIES_DATA ###"
 print "\ncities_data filetype: ", c_data_type
+print "\ncollect filetype: ", type(cities_data.collect())
 print "\nNumber of elements: ", c_count
 print "\nFirst element in the dataset: ", c_first
 print "\nTop 5 elements in the dataset: ", c_top_5
