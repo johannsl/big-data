@@ -78,57 +78,48 @@ foursquare_data = sc.textFile("../foursquare-data/dataset_TIST2015.tsv",
 time0 = datetime.now()
 
 # City data set
-print "\nMapping cities - removing excess ...",
+print "\nMapping cities - removing excess ...\n",
 cities_data = cities_data.map(remove_excess)
 cities_collection = cities_data.collect()
 time1 = datetime.now()
-print "\nCities removing excess done", time1-time0
+print "\nCities removing excess done", time1-time0, "\n"
 
 # Foursquare data set
-print "\nFiltering foursquare - removing header ..."
+print "\nFiltering foursquare - removing header ...\n"
 foursquare_data_header = foursquare_data.first()
 foursquare_data = foursquare_data.filter(lambda x: x != foursquare_data_header)
 time2 = datetime.now()
-print "\nFoursquare removing header done", time2-time1
+print "\nFoursquare removing header done", time2-time1, "\n"
 
-print "\nFirst foursquare - finding a sample ..."
+print "\nFirst foursquare - finding a sample ...\n"
 first = foursquare_data.first()
 time3 = datetime.now()
-print "\nFoursquare finding a sample done", time3-time2, "\n", first
+print "\nFoursquare finding a sample done", time3-time2, "\n", first, "\n"
 
-print "\nMapping foursquare - setting date and time ..."
+print "\nMapping foursquare - setting date and time ...\n"
 foursquare_data = foursquare_data.map(set_time)
 time4 = datetime.now()
-print "\nFoursquare setting date and time done", time4-time3
+print "\nFoursquare setting date and time done", time4-time3, "\n"
 
-print "\nFirst foursquare - checking sample ..."
+print "\nFirst foursquare - checking sample ...\n"
 first = foursquare_data.first()
 time5 = datetime.now()
-print "\nFoursquare checking sample done", time5-time4, "\n", first
+print "\nFoursquare checking sample done", time5-time4, "\n", first, "\n"
 
+print "\nMap foursquare - assigning locations ...\n"
+foursquare_data = foursquare_data.map(assign_location)
+time6 = datetime.now()
+print "\nFoursquare assigning locations done", time6-time5, "\n"
 
+print "\nFirst foursquare - checking sample ...\n"
+first = foursquare_data.first()
+time7 = datetime.now()
+print "\nFoursquare checking sample done", time7-time6, "\n", first, "\n"
 
-
-#foursquare_data = foursquare_data.map(assign_location)
-#fq_data_type = type(foursquare_data)
-#fq_count = foursquare_data.count()
-#fq_first = foursquare_data.first()
-#fq_top_5 = foursquare_data.top(5)
-
-
-
-# Print some data information
-#print "\n### CITIES_DATA ###"
-#print "\ncities_data filetype: ", c_data_type
-#print "\nNumber of elements: ", c_count
-#print "\nFirst element in the dataset: ", c_first
-#print "\nTop 5 elements in the dataset: ", c_top_5
-#print "\ncities_collection type: ", cities_collection_type
-#print "\n### FOURSQUARE_DATA ###"
-#print "\nfoursquare_data filetype: ", fq_data_type
-#print "\nNumber of elements: ", fq_count
-#print "\nFirst element in the dataset: ", fq_first
-#print "\nTop 5 elements in the dataset: ", fq_top_5
+#print "\nCountByKey foursquare - finding unique users ...\n"
+#users = foursquare_data.distinct().count()
+#time8 = datetime.now()
+#print "\nFoursquare finding unique users done", time8-time7, "\n", users, "\n"
 
 # Stop the spark context
 sc.stop()
