@@ -30,7 +30,8 @@ def set_time(data):
     return result
 
 foursquare_data_header = foursquare_data.first()
-foursquare_data_headless = foursquare_data.filter(lambda x: x != foursquare_data_header)
+foursquare_data_headless = foursquare_data.filter(lambda x: 
+                                                x != foursquare_data_header)
 new_rdd = foursquare_data_headless.map(set_time)
 new_rdd.saveAsTextFile("foursquare-data/foursquare_edit")
 sc.stop()
