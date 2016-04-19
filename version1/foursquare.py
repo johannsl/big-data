@@ -76,7 +76,7 @@ def foursquare_city(data):
 
 # Create a spark context
 conf = (SparkConf()
-         .setMaster("local[2]")
+         .setMaster("local[4]")
          .setAppName("My app")
          .set("spark.executor.memory", "4g"))
 sc = SparkContext(conf = conf)
@@ -165,7 +165,7 @@ key_value = foursquare_data.map(foursquare_session)
 sessions = key_value.reduceByKey(add).count()
 time10 = datetime.now()
 print "\nFoursquare finding total check-in sessions done", time10-time9, "\n", sessions, "\n"
-# time: 0:00:45.088675
+# time (local [2]): 0:00:45.088675
 # 6338302
 # //// Task 4. (c) ////
 
