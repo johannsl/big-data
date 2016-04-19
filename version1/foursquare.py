@@ -57,7 +57,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # Create a spark context
 conf = (SparkConf()
-         .setMaster("local[2]")
+         .setMaster("local[4]")
          .setAppName("My app")
          .set("spark.executor.memory", "4g"))
 sc = SparkContext(conf = conf)
@@ -68,9 +68,12 @@ print "\nSparkConf id: ", sc.applicationId
 print "\nUser: ", sc.sparkUser()
 print "\nVersion: ", sc.version
 
+# ---- Task 1. ----
 # Import data
 cities_data = sc.textFile("../foursquare-data/dataset_TIST2015_Cities.txt",
                             use_unicode=False)
+# //// Task 1 ////
+
 foursquare_data = sc.textFile("../foursquare-data/dataset_TIST2015.tsv",
                                 use_unicode=False)
 
@@ -96,26 +99,33 @@ first = foursquare_data.first()
 time3 = datetime.now()
 print "\nFoursquare finding a sample done", time3-time2, "\n", first, "\n"
 
+# ---- Task 2. ----
 print "\nMapping foursquare - setting date and time ...\n"
 foursquare_data = foursquare_data.map(set_time)
 time4 = datetime.now()
 print "\nFoursquare setting date and time done", time4-time3, "\n"
+# //// Task 2. ////
 
-print "\nFirst foursquare - checking sample ...\n"
+print "\nFirst foursquare - checking sample 1 ...\n"
 first = foursquare_data.first()
 time5 = datetime.now()
-print "\nFoursquare checking sample done", time5-time4, "\n", first, "\n"
+print "\nFoursquare checking sample 1 done", time5-time4, "\n", first, "\n"
 
+# ---- Task 3. ----
 print "\nMap foursquare - assigning locations ...\n"
 foursquare_data = foursquare_data.map(assign_location)
 time6 = datetime.now()
 print "\nFoursquare assigning locations done", time6-time5, "\n"
+# //// Task 3. ////
 
-print "\nFirst foursquare - checking sample ...\n"
+print "\nFirst foursquare - checking sample 2 ...\n"
 first = foursquare_data.first()
 time7 = datetime.now()
-print "\nFoursquare checking sample done", time7-time6, "\n", first, "\n"
+print "\nFoursquare checking sample 2 done", time7-time6, "\n", first, "\n"
 
+# ---- Task 4. (a) ----
+
+# //// Task 4. (a) ////
 #print "\nCountByKey foursquare - finding unique users ...\n"
 #users = foursquare_data.distinct().count()
 #time8 = datetime.now()
