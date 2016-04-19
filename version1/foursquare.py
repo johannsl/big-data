@@ -167,13 +167,21 @@ time10 = datetime.now()
 # 6338302
 # //// Task 4. (c) ////
 
+"""
+The next two problems are difficult.
+It might be because the mapping is slow (assign_location()).
+Or it might be the count() in itself that is slow.
+
+We could try to count approximately (there are ways).
+"""
+
 # ---- Task 4. (d) ----
 #print "\nReduceByKey foursquare - finding countries represented ...\n"
 #key_value = foursquare_data_location.map(foursquare_country)
 #countries = key_value.reduceByKey(add).count()
 time11 = datetime.now()
 #print "\nFoursquare finding countries represented done", time11-time10, "\n", countries, "\n"
-# 26
+# 26 (77)
 # //// Task 4. (d) ////
 
 # ---- Task 4. (e) ----
