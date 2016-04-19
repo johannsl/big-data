@@ -58,10 +58,6 @@ def haversine(lat1, lon1, lat2, lon2):
 	r = 6371 # Radius of earth in kilometers. Use 3956 for miles
 	return c * r
 
-<<<<<<< HEAD
-def map_userids(checkin):
-	return (checkin[1], 1)
-=======
 def foursquare_id(data):
     line = data.split("\t")
     return (line[1], 1)
@@ -77,7 +73,6 @@ def foursquare_country(data):
 def foursquare_city(data):
     line = data.split("\t")
     return (line[10], 1)
->>>>>>> 5b750d8b6084b388255c171008a3220e3464ca35
 
 # Create a spark context
 conf = (SparkConf()
@@ -148,11 +143,11 @@ time7 = datetime.now()
 print "\nFoursquare checking sample 2 done", time7-time6, "\n", first, "\n"
 
 # ---- Task 4. (a) ----
-#print "\nReduceByKey foursquare - finding unique users ...\n"
-#key_value = foursquare_data.map(foursquare_id)
-#users = key_value.reduceByKey(add).count()
+print "\nReduceByKey foursquare - finding unique users ...\n"
+key_value = foursquare_data.map(foursquare_id)
+users = key_value.reduceByKey(add).count()
 time8 = datetime.now()
-#print "\nFoursquare finding unique users done", time8-time7, "\n", users, "\n"
+print "\nFoursquare finding unique users done", time8-time7, "\n", users, "\n"
 # 256307
 # //// Task 4. (a) ////
 
