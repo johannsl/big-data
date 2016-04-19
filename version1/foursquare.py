@@ -3,6 +3,7 @@ from datetime import timedelta
 from math import *
 from pyspark import SparkConf
 from pyspark import SparkContext
+from operator import add
 import sys
 
 # Script functions to edit data
@@ -54,6 +55,9 @@ def haversine(lat1, lon1, lat2, lon2):
 	c = 2 * asin(sqrt(a))
 	r = 6371 # Radius of earth in kilometers. Use 3956 for miles
 	return c * r
+
+def map_userids(checkin):
+	return (checkin[1], 1)
 
 # Create a spark context
 conf = (SparkConf()
@@ -124,8 +128,14 @@ time7 = datetime.now()
 print "\nFoursquare checking sample 2 done", time7-time6, "\n", first, "\n"
 
 # ---- Task 4. (a) ----
-
+# How many unique users are represented in the dataset?
+print "\n---- Task 4. (a) ----\n"
+foursquare_data_userids = foursquare_data.map(map_userids) # ta et dataset som ikke har blitt assignet location til her
+print foursquare_data_userids.first()
+foursquare_data_userids_reduced = foursquare_data_userids.reduceByKey(add)
+print len(foursquare_data_userids_reduced.collect())
 # //// Task 4. (a) ////
+
 #print "\nCountByKey foursquare - finding unique users ...\n"
 #users = foursquare_data.distinct().count()
 #time8 = datetime.now()
