@@ -152,37 +152,38 @@ print "\nFoursquare finding unique users done", time8-time7, "\n", users, "\n"
 # //// Task 4. (a) ////
 
 # ---- Task 4. (b) ----
-#print "\nCount foursquare - finding total check-ins ...\n"
-#check_ins = foursquare_data.count()
+print "\nCount foursquare - finding total check-ins ...\n"
+check_ins = foursquare_data.count()
 time9 = datetime.now()
-#print "\nFoursquare finding total check-ins done", time9-time8, "\n", check_ins, "\n"
+print "\nFoursquare finding total check-ins done", time9-time8, "\n", check_ins, "\n"
 # 19265256
 # //// Task 4. (b) ////
 
 # ---- Task 4. (c) ----
-#print "\nReduceByKey foursquare - finding total check-in sessions ...\n"
-#key_value = foursquare_data.map(foursquare_session)
-#sessions = key_value.reduceByKey(add).count()
+print "\nReduceByKey foursquare - finding total check-in sessions ...\n"
+key_value = foursquare_data.map(foursquare_session)
+sessions = key_value.reduceByKey(add).count()
 time10 = datetime.now()
-#print "\nFoursquare finding total check-in sessions done", time10-time9, "\n", sessions, "\n"
+print "\nFoursquare finding total check-in sessions done", time10-time9, "\n", sessions, "\n"
+# time: 0:00:45.088675
 # 6338302
 # //// Task 4. (c) ////
 
 # ---- Task 4. (d) ----
-#print "\nReduceByKey foursquare - finding countries represented ...\n"
-#key_value = foursquare_data_location.map(foursquare_country)
-#countries = key_value.reduceByKey(add).count()
+print "\nReduceByKey foursquare - finding countries represented ...\n"
+key_value = foursquare_data_location.map(foursquare_country)
+countries = key_value.reduceByKey(add).count()
 time11 = datetime.now()
-#print "\nFoursquare finding countries represented done", time11-time10, "\n", countries, "\n"
+print "\nFoursquare finding countries represented done", time11-time10, "\n", countries, "\n"
 # 26
 # //// Task 4. (d) ////
 
 # ---- Task 4. (e) ----
-#print "\nReduceByKey foursquare - finding cities represented ...\n"
-#key_value = foursquare_data_location.map(foursquare_cities)
-#cities = key_value.reduceByKey(add).count()
+print "\nReduceByKey foursquare - finding cities represented ...\n"
+key_value = foursquare_data_location.map(foursquare_cities)
+cities = key_value.reduceByKey(add).count()
 time12 = datetime.now()
-#print "\nFoursquare finding cities represented done", time12-time11, "\n", cities, "\n"
+print "\nFoursquare finding cities represented done", time12-time11, "\n", cities, "\n"
 # 413
 # //// Task 4. (e) ////
 
