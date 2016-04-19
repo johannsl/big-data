@@ -104,23 +104,28 @@ print "\nMapping foursquare - setting date and time ...\n"
 foursquare_data = foursquare_data.map(set_time)
 time4 = datetime.now()
 print "\nFoursquare setting date and time done", time4-time3, "\n"
-# //// Task 2 ////
+# //// Task 2. ////
 
 print "\nFirst foursquare - checking sample 1 ...\n"
 first = foursquare_data.first()
 time5 = datetime.now()
 print "\nFoursquare checking sample 1 done", time5-time4, "\n", first, "\n"
 
+# ---- Task 3. ----
 print "\nMap foursquare - assigning locations ...\n"
 foursquare_data = foursquare_data.map(assign_location)
 time6 = datetime.now()
 print "\nFoursquare assigning locations done", time6-time5, "\n"
+# //// Task 3. ////
 
 print "\nFirst foursquare - checking sample 2 ...\n"
 first = foursquare_data.first()
 time7 = datetime.now()
 print "\nFoursquare checking sample 2 done", time7-time6, "\n", first, "\n"
 
+# ---- Task 4. (a) ----
+
+# //// Task 4. (a) ////
 #print "\nCountByKey foursquare - finding unique users ...\n"
 #users = foursquare_data.distinct().count()
 #time8 = datetime.now()
