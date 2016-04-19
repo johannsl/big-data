@@ -68,9 +68,12 @@ print "\nSparkConf id: ", sc.applicationId
 print "\nUser: ", sc.sparkUser()
 print "\nVersion: ", sc.version
 
+# ---- Task 1. ----
 # Import data
 cities_data = sc.textFile("../foursquare-data/dataset_TIST2015_Cities.txt",
                             use_unicode=False)
+# //// Task 1 ////
+
 foursquare_data = sc.textFile("../foursquare-data/dataset_TIST2015.tsv",
                                 use_unicode=False)
 
@@ -96,10 +99,12 @@ first = foursquare_data.first()
 time3 = datetime.now()
 print "\nFoursquare finding a sample done", time3-time2, "\n", first, "\n"
 
+# ---- Task 2. ----
 print "\nMapping foursquare - setting date and time ...\n"
 foursquare_data = foursquare_data.map(set_time)
 time4 = datetime.now()
 print "\nFoursquare setting date and time done", time4-time3, "\n"
+# //// Task 2 ////
 
 print "\nFirst foursquare - checking sample 1 ...\n"
 first = foursquare_data.first()
