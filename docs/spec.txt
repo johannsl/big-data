@@ -14,6 +14,8 @@
 (a) For these 100 sessions, output data about their check-ins into a CSV or TSV file. Use all available data fields such as checkin_id, ses- sion_id, etc. and also add check-in date in `YYYY-MM-DD HH:MM:SS' format.
 (b) Visualize these sessions in CartoDB (more info below).
 
+
+
 8. Feel free to explore the data also in other ways. Extensions to the analysis and further insights are welcome!
 3
 1.2.1 Haversine formula
@@ -32,6 +34,8 @@ lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
     c = 2 * asin(sqrt(a))
     r = 6371 # Radius of earth in kilometers. Use 3956 for miles
     return c * r
+
+
 1.2.2 Session visualization in CartoDB
 CartoDB is an in-browser mapping service, which you can use to visualize check- ins or sessions. How to visualize the check-ins:
 1. Create a free account at https://cartodb.com/signup.
