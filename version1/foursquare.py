@@ -165,7 +165,7 @@ key_value = foursquare_data.map(foursquare_session)
 sessions = key_value.reduceByKey(add).count()
 time10 = datetime.now()
 print "\nFoursquare finding total check-in sessions done", time10-time9, "\n", sessions, "\n"
-# time (local [2]): 0:00:45.088675
+# time (local [4]): 0:00:46.663409
 # 6338302
 # //// Task 4. (c) ////
 
