@@ -125,21 +125,21 @@ print "\nFoursquare setting date and time done", time4-time3, "\n"
 # //// Task 2. ////
 
 print "\nFirst foursquare - checking sample 1 ...\n"
-first = foursquare_data_time.count()
+first = foursquare_data_time.first()
 time5 = datetime.now()
 print "\nFoursquare checking sample 1 done", time5-time4, "\n", first, "\n"
 
 # ---- Task 3. ----
-#print "\nMap foursquare - assigning locations ...\n"
-#foursquare_data_location = foursquare_data.map(assign_location)
-#time6 = datetime.now()
-#print "\nFoursquare assigning locations done", time6-time5, "\n"
+print "\nMap foursquare - assigning locations ...\n"
+foursquare_data_location = foursquare_data.map(assign_location)
+time6 = datetime.now()
+print "\nFoursquare assigning locations done", time6-time5, "\n"
 # //// Task 3. ////
 
-#print "\nFirst foursquare - checking sample 2 ...\n"
-#first = foursquare_data_location.first()
-#time7 = datetime.now()
-#print "\nFoursquare checking sample 2 done", time7-time6, "\n", first, "\n"
+print "\nFirst foursquare - checking sample 2 ...\n"
+first = foursquare_data_location.first()
+time7 = datetime.now()
+print "\nFoursquare checking sample 2 done", time7-time6, "\n", first, "\n"
 
 # ---- Task 4. (a) ----
 #print "\nReduceByKey foursquare - finding unique users ...\n"
@@ -153,7 +153,7 @@ time8 = datetime.now()
 # ---- Task 4. (b) ----
 #print "\nCount foursquare - finding total check-ins ...\n"
 #check_ins = foursquare_data.count()
-#time9 = datetime.now()
+time9 = datetime.now()
 #print "\nFoursquare finding total check-ins done", time9-time8, "\n", check_ins, "\n"
 # 19265256
 # //// Task 4. (b) ////
@@ -162,7 +162,7 @@ time8 = datetime.now()
 #print "\nReduceByKey foursquare - finding total check-in sessions ...\n"
 #key_value = foursquare_data.map(foursquare_session)
 #sessions = key_value.reduceByKey(add).count()
-#time10 = datetime.now()
+time10 = datetime.now()
 #print "\nFoursquare finding total check-in sessions done", time10-time9, "\n", sessions, "\n"
 # 6338302
 # //// Task 4. (c) ////
@@ -171,7 +171,7 @@ time8 = datetime.now()
 #print "\nReduceByKey foursquare - finding countries represented ...\n"
 #key_value = foursquare_data_location.map(foursquare_country)
 #countries = key_value.reduceByKey(add).count()
-#time11 = datetime.now()
+time11 = datetime.now()
 #print "\nFoursquare finding countries represented done", time11-time10, "\n", countries, "\n"
 # 26
 # //// Task 4. (d) ////
@@ -180,10 +180,14 @@ time8 = datetime.now()
 #print "\nReduceByKey foursquare - finding cities represented ...\n"
 #key_value = foursquare_data_location.map(foursquare_cities)
 #cities = key_value.reduceByKey(add).count()
-#time11 = datetime.now()
+time12 = datetime.now()
 #print "\nFoursquare finding cities represented done", time12-time11, "\n", cities, "\n"
 # 413
-# //// Task 4. (d) ////
+# //// Task 4. (e) ////
+
+# ---- Task 5. ----
+#lol
+# //// Task 5. ////
 
 # Stop the spark context
 sc.stop()
