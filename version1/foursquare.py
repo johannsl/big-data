@@ -8,6 +8,9 @@ from pyspark import SparkContext
 import sys
 
 # Script functions to edit data
+def printer(data):
+    print data
+
 def set_time(data):
     line = data.split("\t")
     old_date = datetime.strptime(line[3], "%Y-%m-%d %H:%M:%S")
@@ -75,7 +78,7 @@ def foursquare_city(data):
 
 # Create a spark context
 conf = (SparkConf()
-         .setMaster("local[2]")
+         .setMaster("local[1]")
          .setAppName("My app")
          .set("spark.executor.memory", "4g"))
 sc = SparkContext(conf = conf)
@@ -200,11 +203,12 @@ time12 = datetime.now()
 print "\nReduceByKey, filter, histogram foursquare - sessions histogram ...\n"
 filter_sessions = sessions.filter(lambda x: x[1]>4)
 #filter_sessions = filter_sessions.take(10)
-#histogram_sessions = filter_sessions.histogram(3)
+filter_sessions.foreach(printer)
+histogram_sessions = filter_sessions.histogram([0, 10, 20, 30, 40])
 first = filter_sessions.take(5)
 time13 = datetime.now()
 print "\nFoursquare sessions histogram done\n", first, "\n"
-#print "\nFoursquare sessions histogram done\n", time13-time12, "\n", histogram_sessions, "\n"
+print "\nFoursquare sessions histogram done\n", time13-time12, "\n", histogram_sessions, "\n"
 # //// Task 5. ////
 
 # Stop the spark context
