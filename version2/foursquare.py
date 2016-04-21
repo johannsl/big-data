@@ -9,11 +9,15 @@ import sys
 
 cities_collection = 0
 max_value = 0
+filter_sessions_col = 0
+distance_foursquare_col = 0
 
 # Main function
 def main():
     global cities_collection
     global max_value
+    global filter_sessions_col
+    global distance_foursquare_col   
 
     # Spark init
     sc = spark_init()
@@ -40,6 +44,8 @@ def main():
     # Task 3: Set location 
     foursquare_data_locations = foursquare_data.map(assign_location)
     time3 = datetime.now()
+    #take_5 = foursquare_data_locations.take(5)
+    #print take_5
     print "\nSet location", time3-time2, "\n"
     
     # Task 4a: Find unique users
@@ -93,18 +99,57 @@ def main():
     # Task 5: Creating histogram
     filter_sessions = sessions.filter(lambda x: x[1]>4)
     filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
-    filter_sessions_tot = filter_sessions.reduceByKey(add)
+    filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
     take_100 = filter_sessions_tot.take(100)
     print take_100
     time9 = datetime.now()
     print "\nCreating histogram", time9-time8, "\n"
     
     # Task 6: 
-    take_100 = filter_sessions.take(100)
-    print take_100
+    # (session_id, numberoftimes)
+    #filter_sessions_col = filter_sessions.collect()
+    #for i in range(10):
+    #    print filter_sessions_col[i]
+    #print len(filter_sessions_col)
+
+    # full forsquare with numberoftimes > 4
+    #distance_foursquare = foursquare_data_locations.filter(find_sessions)
+    #take_100 = distance_foursquare.count()
+    #print take_100
+    
+    #for i in range(10):
+    #    print filter_sessions_col[i]
+    #print len(filter_sessions_col)
+
+    #distance_foursquare_col = distance_foursquare.collect()
+
+    #distance_sessions = filter_sessions.map(set_distance)
+
+    #filter_sessions = filter_sessions.map
+    #filter_sessions = filter_sessions.map(lambda x: (x[0], 
+
+    
+    #distance_sessions = distance_sessions.map(set_distance)
 
     sc.stop()
 
+def set_distance(data):
+    time_list = {}
+    for element in distance_foursquare_col:
+        if element[2] == data[0]:
+            time_list[element[3]] = (element[5], element[6])
+    time_list = sorted(time_list, key=time_list.get)
+    print time_list
+    return 
+
+def find_sessions(data):
+    global filter_sessions_col
+    for index in range(len(filter_sessions_col)):
+        if data[2] == filter_sessions_col[index][0]:
+            filter_sessions_col[index] = [data[2], data[3], data[5], data[6]]
+            return True
+    return False
+    
 def spark_init():
     conf = (SparkConf()
              .setMaster("local[2]")
