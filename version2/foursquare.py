@@ -74,7 +74,7 @@ def main():
     The next two problems are difficult.
     It might be because the mapping is slow (assign_location()).
     Or it might be the count() in itself that is slow.
-    
+   "i want the proper numbers, ikke approx" 
     We could try to count approximately (there are ways).
     """
     
@@ -88,6 +88,7 @@ def main():
     # results: 77; 26
     
     # Task 4e: Find cities represented
+    # "There could be two cities with the same name in the same/a different country"
     #key_value = foursquare_data_locations.map(lambda x: (x[10], 1))
     #cities = key_value.reduceByKey(add)
     #cities_count = cities.count()
