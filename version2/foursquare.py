@@ -79,13 +79,13 @@ def main():
     """
     
     # Task 4d: Find coutries represented
-    #key_value = foursquare_data_locations.map(lambda x: (x[9], 1))
-    #countries = key_value.reduceByKey(add)
-    #countries_count = countries.count()
+    key_value = foursquare_data_locations.map(lambda x: (x[9], 1))
+    countries = key_value.reduceByKey(add)
+    countries_count = countries.count()
     time7 = datetime.now()
-    #print "\nFind countries represented", time7-time6, "\n", countries_count, "\n"
-    # benchmarked: @ 4min for 1/58th; @ 5hours 4min for 58/58
-    # results: 77; 26
+    print "\nFind countries represented", time7-time6, "\n", countries_count, "\n"
+    # benchmarked: @ 4min for 1/58th; @ 10min for 1/58th;  @ 5hours 4min for 58/58
+    # results: 77; 10; 26
     
     # Task 4e: Find cities represented
     # "There could be two cities with the same name in the same/a different country"
