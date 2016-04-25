@@ -99,64 +99,23 @@ def main():
     # results: 47, 413
     
     # Task 5: Creating histogram
-    filter_sessions = sessions.filter(lambda x: x[1]>4)
-    filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
-    filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
+    #filter_sessions = sessions.filter(lambda x: x[1]>4)
+    #filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
+    #filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
     time9 = datetime.now()
-    print "\nCreating histogram", time9-time8, "\n"
+    #print "\nCreating histogram", time9-time8, "\n"
     
     # Task 6: 
     key_value_sessions = foursquare_data_locations.map(lambda x: 
                                                     (x[2], (x[3], x[5], x[6])))
+    filter_sessions_invert = sessions.filter(lambda x: x[1]<4)
+    key_value_sessions = key_value_sessions.subtractByKey(filter_sessions_invert)
+
     a = key_value_sessions.first()
     print a
-    #b = key_value_sessions.cogroup(filter_sessions)
-    #c = b.first()
-    #print c
-
-    # (session_id, numberoftimes) as a python list
-    #filter_sessions_col = filter_sessions.collect()
-
-    # full forsquare with numberoftimes > 4
-    #over_four_square = foursquare_data_locations.filter(find_sessions)
-    
-    #lol = over_four_square.getNumPartitions()
-    #print "lol", lol
-    
-    # group by session id
-    #over_four_square = over_four_square.groupBy(lambda x: x[2])
-
-    #print over_four_square.first()
-
-    #task_six_goal = over_four_square.map(set_distance)
-
-    #filter_sessions = filter_sessions.map
-    #filter_sessions = filter_sessions.map(lambda x: (x[0], 
-
-    
-    #distance_sessions = distance_sessions.map(set_distance)
-
-            #filter_sessions_col[index] = [data[2], data[3], data[5], data[6]]
-            #print filter_sessions_col[index]
 
     sc.stop()
 
-#def set_distance(data):
-#    time_list = {}
-#    for element in distance_foursquare_col:
-#        if element[2] == data[0]:
-#            time_list[element[3]] = (element[5], element[6])
-#    time_list = sorted(time_list, key=time_list.get)
-#    print time_list
-#    return 
-
-def find_sessions(data):
-    global filter_sessions_col
-    for index in range(len(filter_sessions_col)):
-        if data[2] == filter_sessions_col[index][0]:
-            return True
-    return False
-    
 def spark_init():
     conf = (SparkConf()
              .setMaster("local[2]")
