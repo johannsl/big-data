@@ -109,8 +109,11 @@ def main():
     key_value_sessions = foursquare_data_locations.map(lambda x: 
                                                     (x[2], (x[3], x[5], x[6])))
     a = key_value_sessions.first()
-    
-    
+    print a
+    #b = key_value_sessions.cogroup(filter_sessions)
+    #c = b.first()
+    #print c
+
     # (session_id, numberoftimes) as a python list
     #filter_sessions_col = filter_sessions.collect()
 
