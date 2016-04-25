@@ -10,14 +10,15 @@ import sys
 cities_collection = 0
 max_value = 0
 filter_sessions_col = 0
-distance_foursquare_col = 0
+#distance_foursquare_col = 0
 
 # Main function
 def main():
+
     global cities_collection
     global max_value
     global filter_sessions_col
-    global distance_foursquare_col   
+    #global distance_foursquare_col   
 
     # Spark init
     sc = spark_init()
@@ -37,17 +38,16 @@ def main():
     print "\nData init", time1-time0, "\n"
 
     # Task 2: Set times
-    #foursquare_data_time = foursquare_data.map(set_time)
+    foursquare_data_time = foursquare_data.map(set_time)
     time2 = datetime.now()
-    #print "\nSet times", time2-time1, "\n"
+    print "\nSet times", time2-time1, "\n"
 
     # Task 3: Set location 
-    foursquare_data_locations = foursquare_data.map(assign_location)
+    foursquare_data_locations = foursquare_data_time.map(assign_location)
+    #foursquare_data_locations = foursquare_data.map(assign_location)
     time3 = datetime.now()
-    #take_5 = foursquare_data_locations.take(5)
-    #print take_5
-    print "\nSet location", time3-time2, "\n"
-    
+    print "\nSet location", time3-time2, "\n"    
+
     # Task 4a: Find unique users
     #key_value = foursquare_data.map(lambda x: (x[1], 1))
     #users = key_value.reduceByKey(add)
@@ -79,11 +79,11 @@ def main():
     """
     
     # Task 4d: Find coutries represented
-    key_value = foursquare_data_locations.map(lambda x: (x[9], 1))
-    countries = key_value.reduceByKey(add)
-    countries_count = countries.count()
+    #key_value = foursquare_data_locations.map(lambda x: (x[9], 1))
+    #countries = key_value.reduceByKey(add)
+    #countries_count = countries.count()
     time7 = datetime.now()
-    print "\nFind countries represented", time7-time6, "\n", countries_count, "\n"
+    #print "\nFind countries represented", time7-time6, "\n", countries_count, "\n"
     # benchmarked: @ 4min for 1/58th; @ 10min for 1/58th;  @ 5hours 4min for 58/58
     # results: 77; 10; 26
     
@@ -101,30 +101,25 @@ def main():
     filter_sessions = sessions.filter(lambda x: x[1]>4)
     filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
     filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
-    take_100 = filter_sessions_tot.take(100)
-    print take_100
     time9 = datetime.now()
     print "\nCreating histogram", time9-time8, "\n"
     
     # Task 6: 
-    # (session_id, numberoftimes)
-    #filter_sessions_col = filter_sessions.collect()
-    #for i in range(10):
-    #    print filter_sessions_col[i]
-    #print len(filter_sessions_col)
+    # (session_id, numberoftimes) as a python list
+    filter_sessions_col = filter_sessions.collect()
 
     # full forsquare with numberoftimes > 4
-    #distance_foursquare = foursquare_data_locations.filter(find_sessions)
-    #take_100 = distance_foursquare.count()
-    #print take_100
+    over_four_square = foursquare_data_locations.filter(find_sessions)
     
-    #for i in range(10):
-    #    print filter_sessions_col[i]
-    #print len(filter_sessions_col)
+    lol = over_four_square.getNumPartitions()
+    print "lol", lol
+    
+    # group by session id
+    #over_four_square = over_four_square.groupBy(lambda x: x[2])
 
-    #distance_foursquare_col = distance_foursquare.collect()
+    print over_four_square.first()
 
-    #distance_sessions = filter_sessions.map(set_distance)
+    #task_six_goal = over_four_square.map(set_distance)
 
     #filter_sessions = filter_sessions.map
     #filter_sessions = filter_sessions.map(lambda x: (x[0], 
@@ -132,22 +127,24 @@ def main():
     
     #distance_sessions = distance_sessions.map(set_distance)
 
+            #filter_sessions_col[index] = [data[2], data[3], data[5], data[6]]
+            #print filter_sessions_col[index]
+
     sc.stop()
 
-def set_distance(data):
-    time_list = {}
-    for element in distance_foursquare_col:
-        if element[2] == data[0]:
-            time_list[element[3]] = (element[5], element[6])
-    time_list = sorted(time_list, key=time_list.get)
-    print time_list
-    return 
+#def set_distance(data):
+#    time_list = {}
+#    for element in distance_foursquare_col:
+#        if element[2] == data[0]:
+#            time_list[element[3]] = (element[5], element[6])
+#    time_list = sorted(time_list, key=time_list.get)
+#    print time_list
+#    return 
 
 def find_sessions(data):
     global filter_sessions_col
     for index in range(len(filter_sessions_col)):
         if data[2] == filter_sessions_col[index][0]:
-            filter_sessions_col[index] = [data[2], data[3], data[5], data[6]]
             return True
     return False
     
