@@ -37,6 +37,7 @@ def main():
     time1 = datetime.now()
     print "\nData init", time1-time0, "\n"
 
+
     # Task 2: Set times
     foursquare_data_time = foursquare_data.map(set_time)
     time2 = datetime.now()
@@ -105,19 +106,24 @@ def main():
     print "\nCreating histogram", time9-time8, "\n"
     
     # Task 6: 
+    key_value_sessions = foursquare_data_locations.map(lambda x: 
+                                                    (x[2], (x[3], x[5], x[6])))
+    a = key_value_sessions.first()
+    
+    
     # (session_id, numberoftimes) as a python list
-    filter_sessions_col = filter_sessions.collect()
+    #filter_sessions_col = filter_sessions.collect()
 
     # full forsquare with numberoftimes > 4
-    over_four_square = foursquare_data_locations.filter(find_sessions)
+    #over_four_square = foursquare_data_locations.filter(find_sessions)
     
-    lol = over_four_square.getNumPartitions()
-    print "lol", lol
+    #lol = over_four_square.getNumPartitions()
+    #print "lol", lol
     
     # group by session id
     #over_four_square = over_four_square.groupBy(lambda x: x[2])
 
-    print over_four_square.first()
+    #print over_four_square.first()
 
     #task_six_goal = over_four_square.map(set_distance)
 
