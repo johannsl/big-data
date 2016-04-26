@@ -10,15 +10,12 @@ import sys
 cities_collection = 0
 max_value = 0
 filter_sessions_col = 0
-#distance_foursquare_col = 0
 
 # Main function
 def main():
-
     global cities_collection
     global max_value
     global filter_sessions_col
-    #global distance_foursquare_col   
 
     # Spark init
     sc = spark_init()
@@ -27,7 +24,9 @@ def main():
     time0 = datetime.now()
     cities_data = sc.textFile("../foursquare-data/dataset_TIST2015_Cities.txt",
                         use_unicode=False)
-    foursquare_data = sc.textFile("../foursquare-data/foursquare_edit/part-00000",
+    #foursquare_data = sc.textFile("../foursquare-data/foursquare_edit/part-00000",
+    #                        use_unicode=False)
+    foursquare_data = sc.textFile("../foursquare-data/dataset_TIST2015.tsv",
                             use_unicode=False)
     foursquare_data_header = foursquare_data.first()
     foursquare_data = foursquare_data.filter(lambda x: x != foursquare_data_header)
@@ -37,7 +36,6 @@ def main():
     time1 = datetime.now()
     print "\nData init", time1-time0, "\n"
 
-
     # Task 2: Set times
     foursquare_data_time = foursquare_data.map(set_time)
     time2 = datetime.now()
@@ -45,22 +43,22 @@ def main():
 
     # Task 3: Set location 
     foursquare_data_locations = foursquare_data_time.map(assign_location)
-    #foursquare_data_locations = foursquare_data.map(assign_location)
+    foursquare_data_locations = foursquare_data.map(assign_location)
     time3 = datetime.now()
     print "\nSet location", time3-time2, "\n"    
 
     # Task 4a: Find unique users
-    #key_value = foursquare_data.map(lambda x: (x[1], 1))
-    #users = key_value.reduceByKey(add)
-    #users_count = users.count()
+    key_value = foursquare_data.map(lambda x: (x[1], 1))
+    users = key_value.reduceByKey(add)
+    users_count = users.count()
     time4 = datetime.now()
-    #print "\nFind unique users", time4-time3, "\n", users_count, "\n"
+    print "\nFind unique users", time4-time3, "\n", users_count, "\n"
     # 256307
     
     # Task 4b: Find total check-ins
-    #check_ins = foursquare_data.count()
+    check_ins = foursquare_data.count()
     time5 = datetime.now()
-    #print "\nFind total check-ins", time5-time4, "\n", check_ins, "\n"
+    print "\nFind total check-ins", time5-time4, "\n", check_ins, "\n"
     # 19265256
     
     # Task 4c: Find total check-in sessions
@@ -75,35 +73,36 @@ def main():
     The next two problems are difficult.
     It might be because the mapping is slow (assign_location()).
     Or it might be the count() in itself that is slow.
-   "i want the proper numbers, ikke approx" 
+    "i want the proper numbers, ikke approx" 
     We could try to count approximately (there are ways).
     """
     
     # Task 4d: Find coutries represented
-    #key_value = foursquare_data_locations.map(lambda x: (x[9], 1))
-    #countries = key_value.reduceByKey(add)
-    #countries_count = countries.count()
+    key_value = foursquare_data_locations.map(lambda x: (x[9], 1))
+    countries = key_value.reduceByKey(add)
+    countries_count = countries.count()
     time7 = datetime.now()
-    #print "\nFind countries represented", time7-time6, "\n", countries_count, "\n"
+    print "\nFind countries represented", time7-time6, "\n", countries_count, "\n"
     # benchmarked: @ 4min for 1/58th; @ 10min for 1/58th;  @ 5hours 4min for 58/58
     # results: 77; 10; 26
     
     # Task 4e: Find cities represented
     # "There could be two cities with the same name in the same/a different country"
-    #key_value = foursquare_data_locations.map(lambda x: (x[10], 1))
-    #cities = key_value.reduceByKey(add)
-    #cities_count = cities.count()
+    key_value = foursquare_data_locations.map(lambda x: ((x[9], x[10]), 1))
+    cities = key_value.reduceByKey(add)
+    cities_count = cities.count()
     time8 = datetime.now()
-    #print "\nFind cities represented", time8-time7, "\n", cities_count, "\n"
+    print "\nFind cities represented", time8-time7, "\n", cities_count, "\n"
     # benchmarked: @ 4min for 1/58th; @ ?min for 58/58
     # results: 47, 413
     
     # Task 5: Creating histogram
     filter_sessions = sessions.filter(lambda x: x[1]>4)
-    #filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
-    #filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
+    filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
+    filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
+    filter_sessions_col = filter_sessions_tot.collect()
     time9 = datetime.now()
-    #print "\nCreating histogram", time9-time8, "\n"
+    print "\nCreating histogram", time9-time8, "\n", filter_sessions_col, "\n"
     
     # Task 6: 
     key_value_sessions = foursquare_data_locations.map(lambda x: 
@@ -112,7 +111,7 @@ def main():
     key_value_sessions = key_value_sessions.subtractByKey(filter_sessions_invert)
     key_value_sessions = key_value_sessions.groupByKey().mapValues(list)
     key_value_sessions = key_value_sessions.map(set_distance)
-    #a = key_value_sessions.take(10)
+    a = key_value_sessions.take(10)
     time10 = datetime.now()
     print "\nTask 6", time10-time9, "\n", #a, "\n"
     
@@ -166,9 +165,9 @@ def set_distance(data):
 
 def spark_init():
     conf = (SparkConf()
-             .setMaster("local[2]")
+             .setMaster("local[4]")
              .setAppName("Foursquare")
-             .set("spark.executor.memory", "4g"))
+             .set("spark.executor.memory", "6g"))
     sc = SparkContext(conf = conf)
 
     # Print some SparkConf variables
