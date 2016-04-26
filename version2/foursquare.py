@@ -99,7 +99,7 @@ def main():
     # results: 47, 413
     
     # Task 5: Creating histogram
-    #filter_sessions = sessions.filter(lambda x: x[1]>4)
+    filter_sessions = sessions.filter(lambda x: x[1]>4)
     #filter_sessions_tot = filter_sessions.map(lambda x: (x[1], 1))
     #filter_sessions_tot = filter_sessions_tot.reduceByKey(add)
     time9 = datetime.now()
@@ -108,11 +108,13 @@ def main():
     # Task 6: 
     key_value_sessions = foursquare_data_locations.map(lambda x: 
                                                     (x[2], (x[3], x[5], x[6])))
-    filter_sessions_invert = sessions.filter(lambda x: x[1]<4)
+    filter_sessions_invert = sessions.subtractByKey(filter_sessions)
     key_value_sessions = key_value_sessions.subtractByKey(filter_sessions_invert)
-
+    key_value_sessions = key_value_sessions.groupByKey().mapValues(tuple)
     a = key_value_sessions.first()
-    print a
+
+    time10 = datetime.now()
+    print "\nTask 6", time10-time9, "\n", a, "\n"
 
     sc.stop()
 
