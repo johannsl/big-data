@@ -110,13 +110,59 @@ def main():
                                                     (x[2], (x[3], x[5], x[6])))
     filter_sessions_invert = sessions.subtractByKey(filter_sessions)
     key_value_sessions = key_value_sessions.subtractByKey(filter_sessions_invert)
-    key_value_sessions = key_value_sessions.groupByKey().mapValues(tuple)
-    a = key_value_sessions.first()
-
+    key_value_sessions = key_value_sessions.groupByKey().mapValues(list)
+    key_value_sessions = key_value_sessions.map(set_distance)
+    #a = key_value_sessions.take(10)
     time10 = datetime.now()
-    print "\nTask 6", time10-time9, "\n", a, "\n"
+    print "\nTask 6", time10-time9, "\n", #a, "\n"
+    
+    # Task 7:
+    key_value_sessions_invert = key_value_sessions.filter(lambda x: x[1]<50)
+    filter_sessions = filter_sessions.subtractByKey(key_value_sessions_invert)
+    key_value_checkins = filter_sessions.map(lambda x: (x[1], x[0]))
+    key_value_checkins = key_value_checkins.top(100)
+    time11 = datetime.now()
+    print "\nTask 7", time11-time10, "\n", key_value_checkins, "\n"
 
+    # Task 7a:
+    key_value_checkins = sc.parallelize(key_value_checkins)
+    key_value_checkins = key_value_checkins.map(lambda x: (x[1], x[0]))
+    key_value_checkin_id = foursquare_data.map(lambda x: (x[2], (x[0], x[1], x[3], x[5], x[6], x[7], x[8])))
+    key_value_checkin_id_invert = key_value_checkin_id.subtractByKey(key_value_checkins)
+    key_value_checkin_id = key_value_checkin_id.subtractByKey(key_value_checkin_id_invert)
+    a = key_value_checkin_id.take(10)
+    print a
+    foursquare_result = key_value_checkin_id.map(set_data)
+    a = foursquare_result.take(10)
+    print a
+    foursquare_data_header = sc.parallelize(["checkin_id\tuser_id\tsession_id\tzulu_time\tlat\tlon\tcategory\tsubcategory"])
+    foursquare_result = foursquare_data_header.union(foursquare_result)
+    a = foursquare_result.take(10)
+    print a
+    foursquare_result.saveAsTextFile("task7_results.tsv")
+    time12 = datetime.now()
+    print "\nTask 7a", time12-time11, "\n", a, "\n" 
     sc.stop()
+
+def set_data(data):
+    result = ""
+    result += str(data[1][0]) + "\t"
+    result += str(data[1][1]) + "\t"
+    result += str(data[0]) + "\t"
+    result += str(data[1][2]) + "\t"
+    result += str(data[1][3]) + "\t"
+    result += str(data[1][4]) + "\t"
+    result += str(data[1][5]) + "\t"
+    result += str(data[1][6]) + "\t"
+    return result
+
+def set_distance(data):
+    distance = 0
+    for checkin in range(len(data[1])-1):
+        #if data[1][checkin+1]:
+        distance += haversine(data[1][checkin][1], data[1][checkin][2],
+                                    data[1][checkin+1][1], data[1][checkin+1][2])
+    return (data[0], distance)
 
 def spark_init():
     conf = (SparkConf()
@@ -149,9 +195,6 @@ def f_init(data):
     line[5] = float(line[5])
     line[6] = float(line[6])
     return line
-
-def generate_tsv(data):
-    return "\t".join(data)
 
 def set_time(data):
     new_date = datetime.strftime(data[3] + timedelta(minutes=data[4]),
